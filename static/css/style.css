@@ -1,0 +1,207 @@
+/* Authored by Peter Garas (pdg777@gmail.com) */
+
+body {
+    padding-bottom: 20px;
+}
+
+ul.added_libraries > li {
+    margin-left: 10px;
+}
+
+.label.label-danger {
+    margin-left: 20px;
+}
+
+span.h4 {
+    vertical-align: middle;
+}
+
+.divider {
+    float: left;
+    background: darkgray;
+    width: 1px;
+    height: 50px;
+}
+
+nav.navbar {
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    height: 50px;
+}
+
+nav.navbar span {
+    margin-right: 10px;
+}
+
+.navbar-form {
+    height: 50px;
+    margin: 0;
+}
+
+.navbar-brand {
+    margin-top: -3px;
+}
+
+.btn.btn-default:not(.navbar-btn), .btn.btn-cancel {
+    min-width: 140px;
+}
+
+form.well {
+    background: whitesmoke;
+}
+
+form.well.inactive {
+    background: ivory;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+#project_test .no-margin {
+    margin: 0;
+}
+
+#project_test .edge-bottom {
+    margin-bottom: 10px;
+}
+
+#project_test .edge-top {
+    margin-top: 10px;
+}
+
+#project_test .edge-left {
+    margin-left: 10px;
+}
+
+@media (max-width: 1000px) {
+    .container {
+        width: 100%;
+    }
+
+    #id_auth_form input[name=username], #id_auth_form input[name=password] {
+        width: 120px;
+    }
+}
+
+@media (max-width: 820px) {
+    .container {
+        padding: 0;
+    }
+
+    ul.navbar-nav {
+        float: left;
+        display: inline-block;
+    }
+
+    #id_auth_form {
+        float: left;
+        padding: 0;
+    }
+
+    .navbar-form {
+        height: auto;
+    }
+
+    .container > .navbar-header {
+        margin: 0;
+        display: inline;
+        float: left;
+        padding-left: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav.navbar {
+        width: 100%;
+        height: auto;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .container > .navbar-header {
+        margin: 12px 0;
+        display: block;
+        padding-left: 0;
+        width: 100%;
+    }
+
+    .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+        margin: 0;
+    }
+
+    ul.navbar-nav {
+        float: none;
+        display: block;
+    }
+
+    #id_auth_form input[name=username], #id_auth_form input[name=password], .navbar-form .form-group,
+    .navbar-text {
+        display: inline;
+    }
+
+    #id_auth_form input[name=username], #id_auth_form input[name=password] {
+        width: 200px;
+    }
+
+    .navbar-form .form-group {
+        display: inline;
+    }
+
+    .nav > li {
+        display: inline-block;
+        padding-top: 4px;
+    }
+
+    .navbar-text {
+        margin-right: 10px;
+    }
+
+    .nav.navbar-brand {
+        height: auto;
+        padding: 0;
+        margin: 0;
+        float: none;
+    }
+
+    .navbar-form {
+        padding: 0;
+    }
+
+    .divider {
+        display: none !important;
+    }
+}
+
+@media (max-width: 540px) {
+    #id_auth_form .navbar-text {
+        display: block;
+    }
+
+    #id_auth_form {
+        width: 100%;
+    }
+
+    #id_auth_form input {
+        width: 100% !important;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 420px) {
+    #project_test .btn.edge-left {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .navbar-text {
+        float: left;
+    }
+
+    .btn-group, #project_test .btn.btn-default, #project_test .btn.btn-cancel {
+        width: 100%;
+    }
+}

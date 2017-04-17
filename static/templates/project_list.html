@@ -1,0 +1,145 @@
+<div class="container-fluid" data-ng-controller="projectListController">
+    <h2>Projects</h2>
+    <p data-ng-hide="flagState.prj">You are not authorized to access this page.</p>
+    <div data-ng-show="flagState.prj" data-ng-init="project_list(); library_list();">
+        <form class="form well col-sm-12" name="project_add_form" data-ng-show="!flagState.project_edit_mode || flagState.current_project == 0" data-ng-submit="append_done(project_add_form, new_libraries)">
+            <div class="form-group col-sm-6" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_name">Project Name</label>
+                <input data-ng-model="project_name" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" required name="project_name" type="text" placeholder="Project Name" class="form-control" focus-on="add_project_focus_first">
+            </div>
+            <div class="form-group col-sm-6" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_active_start_date">Active Start Date</label>
+                <input data-ng-model="project_active_start_date" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" required name="project_active_start_date" type="date" class="form-control">
+            </div>
+            <div class="form-group col-sm-6" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_active_end_date">Active End Date</label>
+                <input data-ng-model="project_active_end_date" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" name="project_active_end_date" type="date" class="form-control">
+            </div>
+            <div class="form-group col-sm-6" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_client_name">Client Name</label>
+                <input data-ng-model="project_client_name" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" required name="project_client_name" type="text" placeholder="Client Name" class="form-control">
+            </div>
+            <div class="form-group col-sm-12" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_description">Description</label>
+                <textarea data-ng-model="project_description" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" required name="project_description" placeholder="Description" rows=3 class="form-control"></textarea>
+            </div>
+            <div class="form-group col-sm-6" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_git_url">Git URL</label>
+                <input data-ng-model="project_git_url" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" required name="project_git_url" type="url" placeholder="URL" class="form-control">
+            </div>
+            <div class="form-group col-sm-6" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_testing_url">Testing URL</label>
+                <input data-ng-model="project_testing_url" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" name="project_testing_url" type="text" placeholder="URL" class="form-control">
+            </div>
+            <div class="form-group col-sm-6" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label for="project_production_url">Production URL</label>
+                <input data-ng-model="project_production_url" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project > 0" name="project_production_url" type="text" placeholder="URL" class="form-control">
+            </div>
+            <div class="form-group col-sm-12 no-margin" data-ng-hide="!flagState.project_edit_mode || flagState.current_project > 0">
+                <label>Libraries</label>
+                <ul class="added-libraries col-sm-12">
+                    <li class="col-sm-6" data-ng-show="new_no_added_libraries">
+                        <span class="h5">None</span>
+                    </li>
+                    <li class="col-sm-6" data-ng-repeat="library in new_libraries" data-ng-hide="library.remove">
+                        <span class="h5">{{ library.description }} {{ library.version }}</span><span class="h4 label label-danger" data-ng-show="!flagState.library_add_mode && flagState.current_project == 0" data-ng-click="remove_library(-1, library.id, $index, true)">Remove</span>
+                    </li>
+                </ul>
+                <div class="new-library" data-ng-show="flagState.library_add_mode && flagState.current_project == 0">
+                    <div class="form-group col-sm-12">
+                        <label for="library_dropdown">Library Description</label>
+                        <select id="library_dropdown" data-ng-model="project.library_dropdown" name="add_library_dropdown" class="form-control" data-ng-required="libraries.length && flagState.library_add_mode">
+                            <option data-ng-repeat="library in libraries" value="{{ library.id }}">{{ library.description }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="library_version">Version Number</label>
+                        <input data-ng-model="project.library_version" name="add_library_version" type="text" placeholder="Version" class="form-control" data-ng-required="libraries.length && flagState.library_add_mode">
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group col-sm-12" data-ng-show="flagState.current_project == 0 && flagState.project_edit_mode">
+                <button data-ng-hide="flagState.library_add_mode || libraries.length == 0" type="button" class="btn btn-default edge-bottom" data-ng-click="add_library()">Add Library</button>
+                <button data-ng-show="flagState.library_add_mode" type="button" class="btn btn-default" data-ng-click="add_library_done(project_add_form, true)">Save Library</button>
+                <button data-ng-show="flagState.library_add_mode" type="button" data-ng-click="cancel_add_library()" class="btn btn-cancel edge-left">Cancel</button>
+            </div>
+            <div class="btn-group col-sm-12" data-ng-hide="flagState.library_add_mode">
+                <button data-ng-show="flagState.project_edit_mode && flagState.current_project == 0" type="submit" class="btn btn-default">Save New Project</button>
+                <button data-ng-hide="flagState.project_edit_mode" type="button" class="btn btn-default" data-ng-click="append(project_add_form)">Add New Project</button>
+                <button data-ng-show="flagState.project_edit_mode && flagState.current_project == 0" type="button" class="btn btn-cancel edge-left" data-ng-click="cancel(project_add_form, true)">Cancel</button>
+            </div>
+        </form>
+        <form class="form well col-sm-12" id="project-edit-form-{{library.id}}" data-ng-repeat="project in projects" data-ng-submit="edit_done(project_form, project.libraries)">
+            <ng-form name="project_form">
+                <input type="hidden" name="id" data-ng-value="project.id">
+                <div class="form-group col-sm-6">
+                    <label for="name_{{ project.id }}">Project Name</label>
+                    <input data-ng-model="project.name" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" required name="name_{{ project.id }}" type="text" placeholder="Project Name" class="form-control" focus-on="project_focus_first_{{ project.id }}">
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="active_start_date_{{ project.id }}">Active Start Date</label>
+                    <input data-ng-model="project.active_start_date2" class="form-control date" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" required name="active_start_date_{{ project.id }}" type="date" data-ng-value="project.active_start_date">
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="active_end_date_{{ project.id }}">Active End Date</label>
+                    <input data-ng-model="project.active_end_date2" class="form-control date" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" name="active_end_date_{{ project.id }}" type="date" data-ng-value="project.active_end_date">
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="client_name_{{ project.id }}">Client Name</label>
+                    <input data-ng-model="project.client_name" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" required name="client_name_{{ project.id }}" type="text" placeholder="Client Name" class="form-control">
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="description_{{ project.id }}">Description</label>
+                    <textarea data-ng-model="project.description" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" required name="description_{{ project.id }}" placeholder="Description" class="form-control"></textarea>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="git_url_{{ project.id }}">Git URL <span class="label label-default" data-ng-show="project.git_url !== ''" data-ng-click="open_link(project.git_url)">Open Link in New Window</span></label>
+                    <input data-ng-model="project.git_url" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" name="git_url_{{ project.id }}" type="text" placeholder="Git URL" class="form-control">
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="testing_url_{{ project.id }}">Testing URL <span class="label label-default" data-ng-show="project.testing_url !== ''" data-ng-click="open_link(project.testing_url)">Open Link in New Window</span></label>
+                    <input data-ng-model="project.testing_url" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" name="testing_url_{{ project.id }}" type="text" placeholder="Testing URL" class="form-control">
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="production_url_{{ project.id }}">Production URL <span class="label label-default" data-ng-show="project.production_url !== ''" data-ng-click="open_link(project.production_url)">Open Link in New Window</span></label>
+                    <input data-ng-model="project.production_url" data-ng-readonly="!flagState.project_edit_mode || flagState.current_project !== project.id" name="production_url_{{ project.id }}" type="text" placeholder="Production URL" class="form-control">
+                </div>
+                <div class="form-group col-sm-12 no-margin">
+                    <label>Libraries</label>
+                    <ul class="added-libraries col-sm-12">
+                        <li class="col-sm-6" data-ng-show="project.no_added_libraries">
+                            <span class="h5">None</span>
+                        </li>
+                        <li class="col-sm-6" data-ng-repeat="library in project.libraries" data-ng-hide="library.remove">
+                            <span class="h5">{{ library.description }} {{ library.version }}</span><span class="h4 label label-danger" data-ng-show="!flagState.library_add_mode && flagState.project_edit_mode && project.id == flagState.current_project" data-ng-click="remove_library(project.id, library.id, $index, false)">Remove</span>
+                        </li>
+                    </ul>
+                    <div class="new-library" data-ng-show="flagState.library_add_mode && project.id == flagState.current_project">
+                        <div class="form-group col-sm-12">
+                            <label for="library_dropdown_{{ project.id }}">Library Description</label>
+                            <select id="library_dropdown_{{ project.id }}" data-ng-model="project.library_dropdown" name="library_dropdown" class="form-control" data-ng-required="libraries.length && flagState.library_add_mode">
+                                <option data-ng-repeat="library in libraries" value="{{ library.id }}">{{ library.description }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label for="library_version">Version Number</label>
+                            <input data-ng-model="project.library_version" name="library_version" type="text" placeholder="Version" class="form-control" data-ng-required="libraries.length && flagState.library_add_mode">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group col-sm-12" data-ng-show="flagState.project_edit_mode && project.id == flagState.current_project" >
+                    <button data-ng-hide="flagState.library_add_mode" type="button" class="btn btn-default edge-bottom" data-ng-click="add_library()">Add Library</button>
+                    <button data-ng-show="flagState.library_add_mode" type="button" class="btn btn-default" data-ng-click="add_library_done(project_form, false)">Save Library</button>
+                    <button data-ng-show="flagState.library_add_mode" type="button" data-ng-click="cancel_add_library()" class="btn btn-cancel edge-left">Cancel</button>
+                </div>
+                <div class="btn-group col-sm-12" data-ng-hide="flagState.library_add_mode">
+                    <button data-ng-show="flagState.project_edit_mode && project.id == flagState.current_project" type="submit" class="btn btn-default">Save</button>
+                    <button data-ng-hide="flagState.project_edit_mode" type="button" class="btn btn-default" data-ng-click="edit(project, $index)">Edit This Project</button>
+                    <button data-ng-hide="flagState.project_edit_mode" type="button" data-ng-click="remove(project.id)" class="btn btn-default edge-left">Remove</button>
+                    <button data-ng-show="flagState.project_edit_mode && project.id == flagState.current_project" type="button" data-ng-click="cancel(project_form, false)" class="btn btn-cancel edge-left">Cancel</button>
+                </div>
+            </ng-form>
+        </form>
+        <div class="col-sm-12" data-ng-show="projects.length > 1"><button type="button" class="btn btn-default pull-right" data-ng-click="scroll_to_top()">Go To Top</button></div>
+    </div>
+</div>

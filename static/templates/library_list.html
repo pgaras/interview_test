@@ -1,0 +1,49 @@
+        <div class="container-fluid" data-ng-controller="libraryListController">
+            <h2>Libraries</h2>
+            <p data-ng-show="!flagState.supe">You are not authorized to access this page.</p>
+            <div data-ng-show="flagState.supe" data-ng-init="list()">
+                <form class="form well col-sm-12" name="library_add_form" data-ng-show="!flagState.library_edit_mode || flagState.current_library == 0" data-ng-submit="append_done(library_add_form)">
+                    <div class="form-group col-sm-12" data-ng-hide="!flagState.library_edit_mode || flagState.current_library > 0">
+                        <label>Description</label>
+                        <input data-ng-model="add_description" data-ng-readonly="!flagState.library_edit_mode || flagState.current_library > 0" required name="add_description" type="text" placeholder="Description" focus-on="add_library_focus_first" class="form-control">
+                    </div>
+                    <div class="form-group col-sm-6" data-ng-hide="!flagState.library_edit_mode || flagState.current_library > 0">
+                        <label>Active Start Date</label>
+                        <input data-ng-model="add_active_start_date" data-ng-readonly="!flagState.library_edit_mode || flagState.current_library > 0" required name="add_active_start_date" type="date" class="form-control">
+                    </div>
+                    <div class="form-group col-sm-6" data-ng-hide="!flagState.library_edit_mode || flagState.current_library > 0">
+                        <label>Active End Date</label>
+                        <input data-ng-model="add_active_end_date" data-ng-readonly="!flagState.library_edit_mode || flagState.current_library > 0" name="add_active_end_date" type="date" class="form-control">
+                    </div>
+                    <div class="btn-group col-sm-12">
+                        <button data-ng-show="flagState.library_edit_mode && flagState.current_library == 0" type="submit" class="btn btn-default">Save</button>
+                        <button data-ng-hide="flagState.library_edit_mode" type="button" class="btn btn-default" data-ng-click="append()">Add New Library</button>
+                        <button data-ng-show="flagState.library_edit_mode && flagState.current_library == 0" type="button" class="edge-left btn btn-cancel" data-ng-click="cancel(library_add_form)">Cancel</button>
+                    </div>
+                </form>
+                <form class="form well col-sm-12 {{ library.status }}" id="edit-form-{{library.id}}" name="library_edit_form_{{ library.id }}" ng-repeat="library in libraries" ng-submit="edit_done(library_form)">
+                    <ng-form name="library_form">
+                    <input type="hidden" name="id" ng-value="library.id">
+                    <div class="form-group col-sm-12">
+                        <label for="description_{{ library.id }}">Description</label>
+                        <input data-ng-model="library.description" data-ng-readonly="!flagState.library_edit_mode || flagState.current_library !== library.id" required name="description_{{ library.id }}" type="text" placeholder="Description" focus-on="library_focus_first_{{ library.id }}" class="form-control">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="active_start_date_{{ library.id }}">Active Start Date</label>
+                        <input data-ng-model="library.active_start_date2" class="form-control date" data-ng-readonly="!flagState.library_edit_mode || flagState.current_library !== library.id" required name="active_start_date_{{ library.id }}" type="date" data-ng-value="library.active_start_date">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="active_end_date_{{ library.id }}">Active End Date</label>
+                        <input data-ng-model="library.active_end_date2" class="form-control date" data-ng-readonly="!flagState.library_edit_mode || flagState.current_library !== library.id" name="active_end_date_{{ library.id }}" type="date" data-ng-value="library.active_end_date">
+                    </div>
+                    <div class="col-sm-12" data-ng-show="library.status == 'inactive'"><p><em>This item is inactive.</em></p></div>
+                    <div class="btn-group col-sm-12">
+                        <button data-ng-show="flagState.library_edit_mode && library.id == flagState.current_library" type="submit" class="btn btn-default">Save</button>
+                        <button data-ng-hide="flagState.library_edit_mode" type="button" class="btn btn-default" data-ng-click="edit(library, $index)">Edit This Library</button>
+                        <button data-ng-show="flagState.library_edit_mode && library.id == flagState.current_library" type="button" data-ng-click="cancel(library_form)" class="edge-left btn btn-cancel">Cancel</button>
+                    </div>
+                    </ng-form>
+                </form>
+                <div class="col-sm-12" data-ng-show="libraries.length > 2"><button type="button" class="btn btn-default pull-right" data-ng-click="scroll_to_top()">Go To Top</button></div>
+            </div>
+        </div>
