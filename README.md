@@ -15,6 +15,7 @@ already reflects the current database migrations. The database file also contain
 for Library and Project models.
 4. If you wish to use a bare database with no library and project entries, go to config/settings.py and change this 
 setting from:
+
     ```
     DATABASES = {
         'default': {
@@ -24,23 +25,24 @@ setting from:
     }
     ```
     
-to:
+    to:
 
     ```
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3.base'),
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3.base'),
+            }
         }
-    }
     ```    
 
 5. From your terminal, you may now run:
-    * python manage.py runserver 0.0.0.0:8000
+
+        python manage.py runserver 0.0.0.0:8000
     
     This will run your Project app at port 8000. Try to access the Project app from your browser:
    
-    * http://< your server ip >:8000
+        http://< your server ip >:8000
    
    You should now be able to access Projects! The UI should be straightforward.
    
@@ -58,21 +60,24 @@ Note: admin accounts have Library Privileges activated by default. Users with Pr
 a group permission of 'project access' with all user permissions granted for api/projects. You can verify this
 by using the adminsuperuser account at the admin site below:
 
-    * http://< your server ip >:8000/admin/
+    http://< your server ip >:8000/admin/
 
 ## API Documentation
 The API Documentation uses DRF's built-in browsable API. It should be located at:
 
-    * http://< your server ip >:8000/api/
+    http://< your server ip >:8000/api/
 
 ## UI Improvements
 While it might be out of scope, some UI features I have incorporated to this project are the following:
 
-    * Bootstrap's responsive output (should work with both mobile and desktop browsers)
-    * Cancel button - I have to implement this as it has been my practice to always include this
+* Bootstrap's responsive output (should work with both mobile and desktop browsers)
+
+* Cancel button - I have to implement this as it has been my practice to always include this
       feature. Also, it helps me when I do the data entry work and interface tests.
-    * Alert notification - another feature from Bootstrap - at least I would know if my methods worked or not.
-    * Highlighted Active Library Items
+      
+* Alert notification - another feature from Bootstrap - at least I would know if my methods worked or not.
+
+* Highlighted Active Library Items
 
 ## What can be improved about this project?
 The task flow is generally clear and concise, although I only came to know of the API Documentation requirement
@@ -83,14 +88,14 @@ to viewsets to satisfy the documentation requirement without additional hassle.
 ## What would you do next?
 Additional features that would be considered are the following:
 
-    * additional constraint checks
-    * unit and functional tests
-    * messaging queue that can do a lot of stuff, like notifying users who are
-      concurrently logged in on data changes, or using it in tandem with Django's caching to
-      update data only when changes have been detected, thereby reducing database hits.
-    * creation of NPM or Bower manifest.json for deployment to dispel the need of committing third-party static js/css assets
-    * api endpoints for integrating with scheduling software applications for start and end of active dates
-    * other useful features that require API integrations such as build status, online avalability checks, and package update notices
+* constraint checks (see below)
+* unit and functional tests
+* messaging queue that can do a lot of stuff, like notifying users who are
+  concurrently logged in on data changes, or using it in tandem with Django's caching to
+  update data only when changes have been detected, thereby reducing database hits.
+* creation of NPM or Bower manifest.json for deployment to dispel the need of committing third-party static js/css assets
+* api endpoints for integrating with scheduling software applications for start and end of active dates
+* other useful features that require API integrations such as build status, online avalability checks, and package update notices
  
 ## What parts didn't you implement?
 Constraint checks on dates:
